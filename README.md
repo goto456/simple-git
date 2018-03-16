@@ -2,7 +2,34 @@
 [1. Git 简介](#1)   
 [2. 基本命令](#2)   
     [2.1. git config: 环境设置命令](#2.1)   
-    [2.2. ]
+    [2.2. git init: 初始化本地仓库](#2.2)
+    [2.3. git clone: 克隆远程仓库到本地](#2.3)
+    [2.4. ssh-keygen: 生成SSH公钥](#2.4)
+    [2.5. git status 查看当前状态](#2.5)
+    [2.6. git add: 添加到暂存区](#2.6)
+    [2.7. git commit: 提交到版本库](#2.7)
+    [2.8. git log: 查看提交历史](#2.8)
+    [2.9. git diff: 显示变更内容](#2.9)
+    [2.10. git reset: 回退版本](#2.10)
+    [2.11. git push: 推送本地分支到远程](#2.11)
+    [2.12. git pull: 拉取远程分支到本地并合并](#2.12)
+[3. 分支管理](#3)
+    [3.1. git branch: 分支操作](#3.1)
+    [3.2. git checkout: 分支间切换](#3.2)
+    [3.3. git merge: 合并分支](#3.3)
+    [3.4. git rebase: 分支的变基](#3.4)
+    [3.5. git cherry-pick: 挑拣节点合并到当前分支上](#3.5)
+[4. 其他命令](#4)
+    [4.1. git revert: 撤销某次提交](#4.1)
+    [4.2. git tag: 标签的操作](#4.2)
+    [4.3. git show: 显示信息](#4.3)
+    [4.4. git blame: 查看文件每行的提交历史（追责）](#4.4)
+[5. 团队协作应用](#5)
+    [5.1 分支设置](#5.1)
+    [5.2 普通开发人员的操作](#5.2)
+    [5.3 团队 leader 的操作](#5.3)
+[6. 结束语](#6)
+
 
 <a name="1"></a>   
 # 1. Git 简介 
@@ -37,7 +64,8 @@
 <a name="2"></a>   
 # 2. 基本命令 
 
-## 2.1. git config: 环境设置命令 <a name="2.1"></a>
+<a name="2.1"></a>   
+## 2.1. git config: 环境设置命令 
 
 通常情况下，安装完Git后的第一件事就是设置**用户名称**和**邮件地址**。每一个Git的提交都会使用这些信息，如果不设置则无法进行提交。
 
@@ -48,7 +76,7 @@
 
 `git config --list`命令可以列出当前Git所有的配置信息。
 
-
+<a name="2.2"></a>   
 ## 2.2. git init: 初始化本地仓库
 
 获取一个 Git 仓库有2中方法：
@@ -58,7 +86,7 @@
 对于第1种方式，如果想对本地现有的一个项目用 Git 来管理，可以直接进入该项目的目录下执行如下命令，就可以将其初始化成一个 Git 仓库了。   
 `$ git init`
 
-
+<a name="2.3"></a>   
 ## 2.3. git clone: 克隆远程仓库到本地
 
 对于第二种方式，也是最常用的方式，比如你在 GitHub 上（或者其他代码托管网站）已经建立了一个项目，你就可以将该项目从远程克隆到本地，这就有了该项目在本地的 Git 仓库。
@@ -72,7 +100,7 @@
 
 如何生成`SSH key`，参见下一条命令：ssh-keygen
 
-
+<a name="2.4"></a>   
 ## 2.4. ssh-keygen: 生成SSH公钥
 
 生成公钥之前先检查系统中是否已经有了公钥，公钥一般在`~/.ssh/`目录下。如果该目录下存在`id_rsa.pub`文件，这就是公钥（id_rsa 文件是私钥）；如果不存在此文件，甚至连`.ssh`目录都不存在，则需要用 ssh-keygen 命令来生成。如下所示：
@@ -82,10 +110,7 @@
 这就可以生成 SSH key 了，公钥`id_rsa.pub`文件的内容大致如下所示：
 > ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/bdrJjo6HNCuzhpTZNVsTju5NnksTca2kRzfbZlFs+8S4bs8hTlo6aV/GJPkTT0zxJfuOgfd4B4O8Xh0NQg51Zl4yCsFdnIKFA0tgBOg/H5oi48Ypoo8h3LO+S8gd8HR5eqndjINx3kCrQx4gISCW25d7GKTm3c40YPoUCIL0Zg4+iuu2ioeVCpv+FSCKhlcrYew7c2aEe3p/oOmATT3UX9S4t94qzy8KkxRlnQ4a8zQ3OTRE23r7+PPHGN8oBAen//NQNn9COUhqU3pHfvtxqYrG1Blhf0t6HhkHz9Fd8StCUIDQv7yHHvuuPFumh3/8PNG8DDPQqWsqXmK2XozT goto456@126.com
 
-
----
-
-
+<a name="2.5"></a>   
 ## 2.5. git status 查看当前状态
 可以在任何时候使用该命令查看当前的状态。一般会显示当前所处的分支，以及当前工作区是否干净，是否有文件要提交。   
 当你克隆远程仓库到本地后，通过该命令查看当前状态时，显示信息如下图所示：
@@ -104,7 +129,7 @@
 
 它会显示新增的文件状态是未跟踪，并且提示用`git add`命令将其添加到暂存区。
 
-
+<a name="2.6"></a>   
 ## 2.6. git add: 添加到暂存区
 无论你新增了一个文件或者对已有的文件进行了修改，都需要将其添加到暂存区，然后提交到版本库。
 
@@ -121,7 +146,7 @@ $ git add .                 //后面接一个点，表示将全部文件添加�
 
 将新增/修改的文件添加到暂存区后，并未提交到版本库，还需要通过`git commit`命令提交到版本库。
 
-
+<a name="2.7"></a>   
 ## 2.7. git commit: 提交到版本库
 该命令是将添加到暂存去的变更提交到版本库，主要有一下几个常用的：
 
@@ -140,7 +165,7 @@ $ git commit -am "变更的说明信息"     //加上-a参数，则不需要上�
 
 执行完git commit命令提交到版本库后，一次简单的流程就算走完了。接下来可以通过git log命令来查看所有的提交历史。
 
-
+<a name="2.8"></a>   
 ## 2.8. git log: 查看提交历史
 如果发现提交了一个错误版本，想回退到上个版本时，就可以通过该命令来查看所有的历史版本，以选择回退到历史的哪个版本。
 
@@ -157,7 +182,7 @@ $ git log --graph     //以图形的方式查看历史（这个我比较常用�
 
 可以看出第2个图的左边显示出了分支的图形
 
-
+<a name="2.9"></a>   
 ## 2.9. git diff: 显示变更内容
 当你对文件进行了修改，想查看进行了哪些修改时，可以通过该命令查看。   
 `git diff`命令会显示修改的文件中哪些内容进行了修改，包括新增了哪些内容，删除了哪些内容。
@@ -170,7 +195,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 ![](https://raw.githubusercontent.com/goto456/markdown-pictures/master/wengeblog/git/git-11.png)
 
-
+<a name="2.10"></a>   
 ## 2.10. git reset: 回退版本
 常用于回退版本或者在各个版本间进行跳跃切换。
 我们可以先用 `git log` 看一下当前历史版本，如下图所示：
@@ -192,7 +217,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 **一般情况下会加一个 `--hard` 参数：`git reset --hard HEAD~1` 或 `git reset --hard a8336834b50daafa0793370`，表示回退到某个版本并且丢弃调工作区进行的修改，而不加该参数表示回退到某个版本但保留工作区的修改。**
 
-
+<a name="2.11"></a>   
 ## 2.11. git push: 推送本地分支到远程
 当修改完成，本地的改动都已经提交到本地库，则可以将本地分支推送到远程代码库了。 
 
@@ -201,7 +226,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 如果，push 的过程中提示当前分支进度落后于远程的分支，则需要通过 `git pull` 命令来拉取远程最新状态和本地分支进行合并，完成之后再 push 到远程就可以了。
 
-
+<a name="2.12"></a>   
 ## 2.12. git pull: 拉取远程分支到本地并合并
 一般是本地分支的进度落后于远程分支时，需要使用该命令。
 
@@ -210,9 +235,10 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 **常用 `git pull --rebase origin master` 用 rebase 的方式进行，不会产生 merge 保持分支干净、整洁**
 
-
+<a name="3"></a>   
 # 3. 分支管理
 
+<a name="3.1"></a>   
 ## 3.1. git branch: 分支操作
 命令：`git branch` 用于显示本地所有分支以及当前所在哪个分支。
 
@@ -231,7 +257,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 命令：`git branch -D branchName` 用于强制删除分支。
 
-
+<a name="3.2"></a>   
 ## 3.2. git checkout: 分支间切换
 该命令除了进行分支间切换功能外，还可以用来丢弃工作区中的修改内容，这里就不作介绍了，仅介绍分之间的切换功能。
 
@@ -246,7 +272,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 图中新建了 test 分支并切换到了该分支上。   
 **注意与 `git branch` 新建分支的区别，此处除了新建分支外还进行了切换操作**
 
-
+<a name="3.3"></a>   
 ## 3.3. git merge: 合并分支
 该命令用于合并两个分支。   
 命令：`git merge branchName` 用于将名为 branchName 的分支合并到当前分支。   
@@ -263,7 +289,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 **注意两种方式的区别：fast-forward 方式仅仅是移动了 HEAD 指针，而非 fast-forward 方式则是新建了一个节点**
 
-
+<a name="3.4"></a>   
 ## 3.4. git rebase: 分支的变基
 命令：`git rebase master` 将当前分支 rebase 到 master 分支   
 命令：`git rebase master dev` 将 dev 分支 rebase 到 master 分支
@@ -310,7 +336,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 ![](https://raw.githubusercontent.com/goto456/markdown-pictures/master/wengeblog/git/git-27.png)
 
-
+<a name="3.5"></a>   
 ## 3.5. git cherry-pick: 挑拣节点合并到当前分支上
 该命令一般用于从其他分支上挑拣某些节点到当前分支。   
 命令：`git cherry-pick commit_id`
@@ -325,9 +351,10 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 **注意：该节点被挑拣合并到 master 上后会产生一个新的节点**
 
-
+<a name="4"></a>   
 # 4. 其他命令
 
+<a name="4.1"></a>   
 ## 4.1. git revert: 撤销某次提交
 该命令用于撤销历史上的某次提交，注意该撤销操会作为一个新节点存在于分支上：
 
@@ -340,6 +367,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 **注意与 `git reset` 的区别**
 
+<a name="4.2"></a>   
 ## 4.2. git tag: 标签的操作
 用于给某次提交打个标签，例如截止到某次提交后完成了某个重大版本的开发，则可以在该次提交打上一个版本的 tag 。
 
@@ -356,6 +384,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 如果想将标题推送到远程库，则可以使用如下命令来完成。   
 命令：`git push origin --tags` 将打的 tag 都推送到远程库
 
+<a name="4.3"></a>   
 ## 4.3. git show: 显示信息
 可用于显示某次提交或者某个 tag 相关的信息。   
 命令：`git show commit_id` 显示某次提交的详细信息
@@ -368,7 +397,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 ![](https://raw.githubusercontent.com/goto456/markdown-pictures/master/wengeblog/git/git-36.png)
 
-
+<a name="4.4"></a>   
 ## 4.4. git blame: 查看文件每行的提交历史（追责）
 可用于查看某个文件中的每一行是那次提交产生的，是谁提交的，什么时候提交的，提交的版本号是多少等等详细信息，在实际工作中方便对出问题的代码进行追责，找到产生 BUG 的责任人。
 
@@ -377,15 +406,16 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 ![](https://raw.githubusercontent.com/goto456/markdown-pictures/master/wengeblog/git/git-37.png)   
 上图中可以看到 `README.md` 这个文件有 5 行，其中后 4 行都是我在 2018 年提交的，第 1 行是另外一个人在 2017 年提交的。
 
-
-# 4. 团队协作应用
+<a name="5"></a>   
+# 5. 团队协作应用
 在团队协作过程中一般会有多个分支，比如有默认的 master 分支，有用于开发的 dev 分支，还有用于测试的 test 分支，用于对外发布的 release 分支，以及每个开发人员开发不同功能时用到的 feature_xx 分支等等。
 
 公司中一般是用 GitLab 搭建的代码托管服务，几个人的小团队也可以自己搭建。
 
 每个团队业务不一样，分支数量的设置也会不一样，下面我介绍一下我们团队的分支设置，以及普通开发人员和项目 leader 对不同分支的不同权限以及不同的操作。
 
-## 4.1 分支设置
+<a name="5.1"></a>   
+## 5.1 分支设置
 我们常用的分支有3个（master 分支、dev 分支、test 分支）以及若干个 feature_xx 分支。
 
 1. `master` 分支：是主分支，是最终上线代码的分支，该分支被设置被保护分支（锁住），普通开发人员没有权限操作，只有团队 leader 有合并的权限；
@@ -393,7 +423,8 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 3. `test` 分支：是用于测试的分支，测试人员可以将自己开发分支中的修改合并到 test 分支在测试环境进行测试，一般该分支不合并到任何分支；
 4. `feature_xx` 分支：是用户开发自己模块功能的特征分支，可以叫 feature_login, feature_ui, feature_payment 等与开发的功能相关的名称，该分支上的功能开发完、测试无误后可合并到 dev 分支上。
 
-## 4.2 普通开发人员的操作
+<a name="5.2"></a>   
+## 5.2 普通开发人员的操作
 普通开发人员，一般按照如下几个步骤来进行开发、测试工作就可以了：
 1. 将远程 dev 分支 clone 到本地，例如：`git clone git@github.com:goto456/test.git`；
 2. 从 dev 分支拉出（新建）自己的 feature 分支用于开发，例如：`git checkout -b feature_login`；
@@ -406,14 +437,15 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 9. 这时表示该功能已经开发完成了，代码的 review 以及发布，需要团队 leader 在合并到 master 操作时进行；这时可以删除了自己的 feature 分支，例如：`git branch -d feature_login`；
 10. **如果在 push 到远程的时候提示需要先 pull 时，我们推荐使用 rebase 的方式：`git pull --rebase` 以保持分支的整洁、美观。**
 
-
-## 4.3 团队 leader 的操作
+<a name="5.3"></a>   
+## 5.3 团队 leader 的操作
 因为只有 leader 有操作 master 分支的权限，所以需要完成 dev 分支到 master 分支的合并，以及后续打 tag 和正式上线发布的工作：
 1. 先切换到 dev 分支，并拉取最新的状态，例如：`git checkout dev`, `git pull --rebase origin dev`；
 2. 进行代码 review 等过程后，合并到 master 分支，例如：`git rebase master`, `git checkout master`, `git merge dev`;**（注意：我们推荐用 rebase 来合并，以保证分支的整洁、美观）**
 3. 为本次完成的版本打上标签，例如：`git tag v1.0 -m "release version 1.0"`；
 4. 将本地合并后的 master 分支以及标签 push 到远程库，例如：`git push orgin master --tags`。
 
-# 5. 结束语
+<a name="6"></a>   
+# 6. 结束语
 以上就是我从自己平时的应用中整理出的一个比较简洁的教程，以及我们团队在实际工作中是如何使用的。希望对大家有所帮助！
 
