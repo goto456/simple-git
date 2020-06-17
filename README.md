@@ -227,7 +227,13 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 如果，push 的过程中提示当前分支进度落后于远程的分支，则需要通过 `git pull` 命令来拉取远程最新状态和本地分支进行合并，完成之后再 push 到远程就可以了。
 
+这里没有提及一种情况：如果本地分支(bc-a)不存在于远端怎么办呢？有两种方式：
+
+1. `git push origin bc-a`  这种方式甚至可以在maser分支上执行
+2. `git push --set-upstream origin bc-a` 即为
+
 <a name="2.12"></a>   
+
 ## 2.12. git pull: 拉取远程分支到本地并合并
 一般是本地分支的进度落后于远程分支时，需要使用该命令。
 
@@ -302,7 +308,7 @@ $ git diff README.md      //后面接文件名，表示只显示该文件的变�
 
 **我们来看一个详细的例子：**   
  你从 master 分支的 C2 上创建了一个新分支 server，为服务端添加了一些功能，提交了 C3 和 C4。 然后从 C3 上创建了特性分支 client，为客户端添加了一些功能，提交了 C8 和 C9。 最后，你回到 server 分支，又提交了 C10。
- 
+
 ![](https://raw.githubusercontent.com/goto456/markdown-pictures/master/wengeblog/git/git-23.png)   
 
 假设你希望将 client 中的修改合并到主分支并发布，但暂时并不想合并 server 中的修改，因为它们还需要经过更全面的测试。这时，你就可以使用 git rebase 命令的 --onto 选项，选中在 client 分支里但不在 server 分支里的修改（即 C8 和 C9），将它们在 master 分支上重放：   
